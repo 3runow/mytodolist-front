@@ -11,7 +11,7 @@ import { HttpHeaders } from '@angular/common/http';
 })
 export class AppComponent {
   title = 'TODOapp';
-  apiURL = 'https://mytodolist-end-production.up.railway.app/';
+  apiURL = 'https://mytodolist-end-production.up.railway.app';
   usuarioLogado = false;
   adminLogado = false;
   tokenJWT = '{ "token":""}';
