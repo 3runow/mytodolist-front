@@ -1,33 +1,84 @@
 <div class="main">
-  <h1>Bruno 131037 - Matheus Siani 101063</h1>
-
-  <div class="input-group">
-    <input
-      class="lg-text-input"
-      #campoNovoItem
-      placeholder="Digite sua tarefa"
-      (keyup.enter)="
-        CREATE_tarefa(campoNovoItem.value); campoNovoItem.value = ''
-      "
-    />
-    <button
-      class="btn-primary"
-      (click)="CREATE_tarefa(campoNovoItem.value); campoNovoItem.value = ''"
-    >
-      Adicionar
+  <div class="user-bar">
+    <button *ngIf="adminLogado" class="btn-panel" (click)="abrirPainelAdmin()">
+      Painel de Admin
     </button>
-    <span class="erro-validacao" *ngIf="mostrarErro">
-      ERRO: Por favor, digite uma tarefa.
-    </span>
+    <button *ngIf="usuarioLogado" class="btn-logout" (click)="logout()">
+      Sair
+    </button>
   </div>
 
-  <ul>
-    <li *ngFor="let tarefaDoLoop of arrayDeTarefas">
-      <app-item
-        [tarefa]="tarefaDoLoop"
-        (removerTarefa)="DELETE_tarefa($event)"
-        (modificaTarefa)="UPDATE_tarefa(tarefaDoLoop)"
-      ></app-item>
-    </li>
-  </ul>
+  <h1>Bruno Barros 131037 - Matheus Siani 101063</h1>
+
+  <div *ngIf="usuarioLogado">
+    <div class="input-group">
+      <input
+        class="lg-text-input"
+        #campoNovoItem
+        placeholder="Digite sua tarefa"
+        (keyup.enter)="
+          CREATE_tarefa(campoNovoItem.value); campoNovoItem.value = ''
+        "
+      />
+      <button
+        class="btn-primary"
+        (click)="CREATE_tarefa(campoNovoItem.value); campoNovoItem.value = ''"
+      >
+        Adicionar
+      </button>
+      <span class="erro-validacao" *ngIf="mostrarErro">
+        Por favor, digite uma tarefa.
+      </span>
+    </div>
+
+    <ul>
+      <li *ngFor="let tarefaDoLoop of arrayDeTarefas">
+        <app-item
+          [tarefa]="tarefaDoLoop"
+          (removerTarefa)="DELETE_tarefa($event)"
+          (modificaTarefa)="UPDATE_tarefa(tarefaDoLoop)"
+        ></app-item>
+      </li>
+    </ul>
+  </div>
+
+  <div *ngIf="!usuarioLogado" class="login">
+    <div class="input-container">
+      <div class="user-container">
+        <i class="ri-user-line"></i>
+      </div>
+      <input #username placeholder="Nome" class="lg-text-input with-icon" />
+    </div>
+
+    <div class="input-container">
+      <div class="password-wrapper">
+        <div class="password-icon">
+          <i class="ri-lock-line"></i>
+        </div>
+
+        <input
+          #password
+          type="password"
+          placeholder="Senha"
+          class="lg-text-input with-icon"
+          (keyup.enter)="login(username.value, password.value)"
+        />
+      </div>
+    </div>
+
+    <button class="btn-primary" (click)="login(username.value, password.value)">
+      Login
+    </button>
+    <span class="erro-validacao" *ngIf="mostrarErroCamposLogin">
+      Preencha todos os campos.
+    </span>
+    <span class="erro-validacao" *ngIf="mostrarErroLogin">
+      Usuário não encontrado ou senha incorreta.
+    </span>
+  </div>
 </div>
+
+<app-admin-usuarios
+  *ngIf="mostrarAdminPanel"
+  (fecharModal)="mostrarAdminPanel = false"
+></app-admin-usuarios>
